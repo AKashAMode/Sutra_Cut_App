@@ -1,0 +1,35 @@
+services:
+  worker:
+    build: ./worker
+    environment:
+      STORAGE_ROOT: /storage
+      WHISPER_MODEL: tiny
+      WHISPER_DEVICE: cpu
+      WHISPER_COMPUTE: int8
+      PEXELS_API_KEY: ${PEXELS_API_KEY:-}
+      PIXABAY_API_KEY: ${PIXABAY_API_KEY:-}
+    volumes:
+      - ./storage:/storage
+    ports:
+      - "8001:8001"
+
+  backend:
+    build: ./backend
+    environment:
+      STORAGE_ROOT: /storage
+      WORKER_BASE_URL: http://worker:8001
+      PEXELS_API_KEY: ${PEXELS_API_KEY:-}
+      PIXABAY_API_KEY: ${PIXABAY_API_KEY:-}
+    volumes:
+      - ./storage:/storage
+    ports:
+      - "8080:8080"
+    depends_on:
+      - worker
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

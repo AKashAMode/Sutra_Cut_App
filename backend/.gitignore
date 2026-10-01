@@ -1,0 +1,28 @@
+# Local environment files; keep the template shareable.
+.env
+.env.*
+!.env.example
+
+# Local Spring configuration overrides (keep application.yml tracked).
+#/src/main/resources/application.yml
+/src/main/resources/application-local.*
+/src/main/resources/application-secret.*
+/src/main/resources/application-secrets.*
+/src/main/resources/application-*.local.*
+
+# Credentials and private keys.
+**/*credentials*.json
+**/*secrets*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Local databases and database logs.
+*.db
+*.mv.db
+*.trace.db
+*.sqlite
+*.sqlite3

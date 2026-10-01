@@ -1,0 +1,50 @@
+server:
+  port: 8080
+  tomcat:
+    max-http-form-post-size: 512MB
+    max-swallow-size: 512MB
+
+spring:
+  application:
+    name: video-auto-editor
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+      file-size-threshold: 10MB
+  datasource:
+    url: jdbc:h2:file:${app.storage.root}/db/videoapp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;AUTO_SERVER=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+app:
+  worker:
+    base-url: ${WORKER_BASE_URL:http://127.0.0.1:8001}
+    timeout-seconds: 600
+  storage:
+    root: ${STORAGE_ROOT:${user.dir}/../storage}
+  pexels:
+    api-key: ${PEXELS_API_KEY:}
+  pixabay:
+    api-key: ${PIXABAY_API_KEY:}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+
+logging:
+  level:
+    com.videoapp: INFO
+    org.springframework.web: INFO
