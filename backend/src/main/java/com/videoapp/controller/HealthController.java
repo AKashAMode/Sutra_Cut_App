@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.videoapp.service.PythonWorkerClient;
 
+//health check controller for the application and the python worker.
+
 @RestController
 @RequestMapping("/api/health")
 public class HealthController {
