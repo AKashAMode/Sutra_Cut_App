@@ -36,6 +36,7 @@ public class RenderController {
         return projectService.renderStatus(id);
     }
 
+    // download api
     @GetMapping("/download")
     public ResponseEntity<Resource> download(@PathVariable String id) {
         Path path = projectService.resolveDownload(id);

@@ -34,6 +34,47 @@ React (Vite :5173)
 
 ## Run locally
 
+### Windows PowerShell
+
+Install FFmpeg (including `ffprobe`) and prepare the worker environment:
+
+```powershell
+winget install --id Gyan.FFmpeg.Shared --exact
+py -3.11 -m venv worker\venv
+worker\venv\Scripts\python.exe -m pip install -r worker\requirements.txt
+```
+
+Restart PowerShell after installing FFmpeg so `ffmpeg` and `ffprobe` are on `PATH`.
+
+Start the worker, backend, and frontend in separate PowerShell windows:
+
+```powershell
+# Worker
+$env:STORAGE_ROOT = "$PWD\storage"
+Set-Location worker
+.\venv\Scripts\python.exe -m uvicorn main:app --host 127.0.0.1 --port 8001
+```
+
+```powershell
+# Backend (run from the repository root)
+$env:STORAGE_ROOT = "$PWD\storage"
+$env:WORKER_BASE_URL = "http://127.0.0.1:8001"
+Set-Location backend
+mvn spring-boot:run
+```
+
+```powershell
+# Frontend (run from the repository root)
+Set-Location frontend
+npm install
+npm run dev
+```
+
+Check `http://localhost:8001/health` before uploading. It must report `"status":"ok"`,
+`"ffmpeg":true`, and `"whisper":true`.
+
+### macOS / Linux
+
 ```bash
 # Optional API keys for stock footage
 cp .env.example .env

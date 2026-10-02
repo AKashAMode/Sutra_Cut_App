@@ -285,6 +285,14 @@ a {
   border-color: var(--saffron);
 }
 
+.clip-icon {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
 .video-frame {
   width: 100%;
   border-radius: 14px;

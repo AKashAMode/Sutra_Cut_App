@@ -37,7 +37,7 @@ def health() -> HealthResponse:
     ffmpeg_ok = shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
     whisper_ok = whisper_service.available()
     return HealthResponse(
-        status="ok" if ffmpeg_ok else "degraded",
+        status="ok" if ffmpeg_ok and whisper_ok else "degraded",
         ffmpeg=ffmpeg_ok,
         whisper=whisper_ok,
         details={"model": whisper_service.WHISPER_MODEL},

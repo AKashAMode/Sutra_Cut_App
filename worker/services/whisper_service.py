@@ -56,13 +56,8 @@ def transcribe(media_path: str, language: str = "") -> dict:
                 }
             )
     except Exception as exc:
-        log.warning("faster-whisper unavailable, using caption fallback: %s", exc)
-        from services.ffmpeg_service import probe
-
-        info = probe(media_path)
-        duration = info.get("duration") or 4.0
-        detected = language or "mixed"
-        segments = _fallback_segments(duration, detected)
+        log.exception("faster-whisper transcription failed for %s", media_path)
+        raise RuntimeError(f"Whisper transcription failed: {exc}") from exc
     if not segments:
         segments = [
             {
@@ -81,27 +76,6 @@ def transcribe(media_path: str, language: str = "") -> dict:
         duration,
     )
     return {"language": detected, "duration": duration, "segments": segments}
-
-
-def _fallback_segments(duration: float, language: str) -> list[dict]:
-    chunk = 4.0
-    segments = []
-    start = 0.0
-    index = 1
-    while start < duration:
-        end = min(duration, start + chunk)
-        segments.append(
-            {
-                "start": round(start, 2),
-                "end": round(end, 2),
-                "text": f"Segment {index} — edit this caption",
-                "language": language,
-                "words": [],
-            }
-        )
-        start = end
-        index += 1
-    return segments
 
 
 def available() -> bool:

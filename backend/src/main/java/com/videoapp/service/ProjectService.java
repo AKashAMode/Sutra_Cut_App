@@ -237,7 +237,6 @@ public class ProjectService {
         return getEdl(projectId);
     }
 
-    @Transactional
     public JobStatusDto startRender(String projectId) {
         RenderJob job = jobQueueService.enqueueRender(projectId);
         jobQueueService.runFinalRender(job.getId());

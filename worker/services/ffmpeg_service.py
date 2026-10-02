@@ -164,7 +164,7 @@ def render_segment_clip(
     ass_path = output_path.with_suffix(".ass")
     write_ass([(0, duration, caption_text)], ass_path, width, height)
     caption_only = False
-    ass_filter = f"ass={_ffmpeg_path(ass_path)}"
+    ass_filter = f"ass=filename='{_ffmpeg_path(ass_path)}'"
 
     try:
         if asset_path and Path(asset_path).exists() and visual_type in {"broll", "icon"}:
